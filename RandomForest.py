@@ -1,13 +1,14 @@
 import numpy as np
-from sklearn.tree import DecisionTreeRegressor
+from sklearn.ensemble import RandomForestRegressor
 from sklearn.impute import SimpleImputer
+from sklearn.model_selection import cross_validate
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_absolute_error as mae
 from sklearn.preprocessing import OneHotEncoder, OrdinalEncoder, StandardScaler
 import pandas as pd
 
-def calc_mae(ml):
-    model = DecisionTreeRegressor(max_leaf_nodes=ml)
+def calc_mae(n):
+    model = RandomForestRegressor(n_estimators=n,random_state=23)
     model.fit(X_train, y_train)
 
     prediction = model.predict(X_valid)
@@ -32,6 +33,8 @@ scaler = StandardScaler()
 scaler.fit_transform(X_train)
 scaler.transform(X_valid)
 
-best = min([calc_mae(i) for i in range(50,600,50)])
+
+best = min([calc_mae(i) for i in range(100,600,50)])
 
 print('best minimum absolute difference: ', best)
+# best score = 185005.172
